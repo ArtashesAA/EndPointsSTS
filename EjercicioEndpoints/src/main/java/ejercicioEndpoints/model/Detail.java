@@ -2,45 +2,58 @@ package ejercicioEndpoints.model;
 
 public class Detail {
 
-	private String date;
+	private Integer anyo;
 	private String content;
 	private String type;
-	private String budget;
-	private Project project;
-	public String getDate() {
-		return date;
+	private Double budget;
+
+	public Detail() {
+
 	}
-	public void setDate(String date) {
-		this.date = date;
+
+	public Detail(Integer anyo, String content, String type, Double budget) {
+		this.anyo = anyo;
+		this.content = content;
+		this.type = type;
+		this.budget = budget;
 	}
+
+	public Integer getAnyo() {
+		return anyo;
+	}
+
+	public void setAnyo(Integer anyo) {
+		this.anyo = anyo;
+	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getBudget() {
+
+	public Double getBudget() {
 		return budget;
 	}
-	public void setBudget(String budget) {
+
+	public void setBudget(Double budget) {
 		this.budget = budget;
 	}
-	public Project getProject() {
-		return project;
-	}
-	public void setProject(Project project) {
-		this.project = project;
-	}
+
 	@Override
 	public String toString() {
-		return "Detail [getDate()=" + getDate() + ", getContent()=" + getContent() + ", getType()=" + getType()
-				+ ", getBudget()=" + getBudget() + ", getProject()=" + getProject() + "]";
+		return "Detail [getAnyo()=" + getAnyo() + ", getContent()=" + getContent() + ", getType()=" + getType()
+				+ ", getBudget()=" + getBudget() + "]";
 	}
-	
+
 }

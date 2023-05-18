@@ -1,47 +1,76 @@
 package ejercicioEndpoints.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicioEndpoints.model.Detail;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 @RestController
 @RequestMapping("/detail")
 public class DetailController {
 
+	List<Detail> details = new ArrayList<Detail>();
+
+	@PostMapping("/createDetail")
+	@Operation(summary = "Create Detail")
+	public ResponseEntity<Detail> setDetail(Double budget, Integer anyo, String content, String type) {
+		Detail detail = new Detail();
+		detail.setAnyo(anyo);
+		detail.setBudget(budget);
+		detail.setContent(content);
+		detail.setType(type);
+
+		details.add(detail);
+
+		return new ResponseEntity<>(detail, HttpStatus.CREATED);
+	}
+
 	@GetMapping("/getDetailById")
-    public ResponseEntity<Detail> getDetailById(@PathVariable String budget) {
-        Detail Detail = new Detail();
-        Detail.setBudget(budget);
-        return ResponseEntity.ok(Detail);
-    }
-    
-    @PostMapping("/createDetail")
-    public ResponseEntity<Detail> createDetail(@RequestBody Detail Detail) {
-        return ResponseEntity.ok(Detail);
-    }
-    
-    @PutMapping("/updateDetail")
-    public ResponseEntity<Detail> updateDetail(@PathVariable String budget, @RequestBody Detail Detail) {
-    	Detail.setBudget(budget);
-        return ResponseEntity.ok(Detail);
-    }
-    
-    @DeleteMapping("/deleteDetail")
-    public ResponseEntity<Void> deleteDetail(@RequestBody Detail Detail) {
-        Detail.setProject(null);
-        Detail.setBudget(null);
-        Detail.setContent(null);
-        Detail.setDate(null);
-        Detail.setType(null);
-        return ResponseEntity.noContent().build();
-    }
+	@Operation(summary = "Get Detail")
+	public ResponseEntity<Detail> getDetailById(Double budget) {
+		for (Detail detail : details) {
+			if (detail.getBudget().equals(budget)) {
+				return new ResponseEntity<>(detail, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@PutMapping("/updateDetail")
+	@Operation(summary = "Update Detail")
+	public ResponseEntity<Detail> updateDetailByBudget(Double budget, Double new_budget, Integer anyo, String content, String type) {
+		for (Detail detail : details) {
+			if (detail.getBudget().equals(budget)) {
+				detail.setAnyo(anyo);
+				detail.setBudget(new_budget);
+				detail.setContent(content);
+				detail.setType(type);
+				return new ResponseEntity<>(detail, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@DeleteMapping("/deleteDetail")
+	@Operation(summary = "Delete Detail")
+	public ResponseEntity<Void> deleteDetailByBudget(Double budget) {
+		for (Detail detail : details) {
+			if (detail.getBudget().equals(budget)) {
+				details.remove(detail);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }

@@ -3,40 +3,46 @@ package ejercicioEndpoints.model;
 public class Code {
 
 	private Integer id;
-	private String packagee;
+	private Integer paquete;
 	private String file;
-	private Project project;
-	
-	public Integer getId() {
-		return id;
+
+	public Code() {
+
 	}
-	public void setId(Integer id) {
+
+	public Code(Integer id, Integer paquete, String file) {
 		this.id = id;
+		this.paquete = paquete;
+		this.file = file;
 	}
-	public String getPackagee() {
-		return packagee;
-	}
-	public void setPackagee(String packagee) {
-		this.packagee = packagee;
-	}
+
 	public String getFile() {
 		return file;
 	}
+
 	public void setFile(String file) {
 		this.file = file;
 	}
-	public Project getProject() {
-		return project;
+
+	public Integer getId() {
+		return id;
 	}
-	public void setProject(Project project) {
-		this.project = project;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
+
+	public Integer getPaquete() {
+		return paquete;
+	}
+
+	public void setPaquete(Integer paquete) {
+		this.paquete = paquete;
+	}
+
 	@Override
 	public String toString() {
-		return "Code [getId()=" + getId() + ", getPackagee()=" + getPackagee() + ", getFile()=" + getFile()
-				+ ", getProject()=" + getProject() + "]";
+		return "Code [getPaquete()=" + getPaquete() + ", getFile()=" + getFile() + ", getId()=" + getId() + "]";
 	}
-	
-	
-	
+
 }

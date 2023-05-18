@@ -1,45 +1,72 @@
 package ejercicioEndpoints.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicioEndpoints.model.Blog;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
 
+	List<Blog> blogs = new ArrayList<Blog>();
+
+	@PostMapping("/createBlog")
+	@Operation(summary = "Create Blog")
+	public ResponseEntity<Blog> setBlog(Integer id, String title) {
+		Blog blog = new Blog();
+		blog.setId(id);
+		blog.setTitle(title);
+
+		blogs.add(blog);
+
+		return new ResponseEntity<>(blog, HttpStatus.CREATED);
+	}
+
 	@GetMapping("/getBlogById")
-    public ResponseEntity<Blog> getBlogById(@PathVariable Integer id) {
-        Blog Blog = new Blog();
-        Blog.setId(id);
-        return ResponseEntity.ok(Blog);
-    }
-    
-    @PostMapping("/createBlog")
-    public ResponseEntity<Blog> createBlog(@RequestBody Blog Blog) {
-        return ResponseEntity.ok(Blog);
-    }
-    
-    @PutMapping("/updateBlog")
-    public ResponseEntity<Blog> updateBlog(@PathVariable Integer id, @RequestBody Blog Blog) {
-    	Blog.setId(id);
-        return ResponseEntity.ok(Blog);
-    }
-    
-    @DeleteMapping("/deleteBlog")
-    public ResponseEntity<Void> deleteBlog(@RequestBody Blog Blog) {
-        Blog.setTitle(null);
-        Blog.setUser(null);
-        Blog.setId(null);
-        Blog.setDate(null);
-        return ResponseEntity.noContent().build();
-    }
+	@Operation(summary = "Get Blog")
+	public ResponseEntity<Blog> getBlogById(Integer id) {
+		for (Blog blog : blogs) {
+			if (blog.getId().equals(id)) {
+				return new ResponseEntity<>(blog, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@PutMapping("/updateBlog")
+	@Operation(summary = "Update Blog")
+	public ResponseEntity<Blog> updateBlogById(Integer id_blog, Integer new_id, String title, Integer anyo) {
+		for (Blog blog : blogs) {
+			if (blog.getId().equals(id_blog)) {
+				blog.setId(new_id);
+				blog.setTitle(title);
+				blog.setAnyo(anyo);
+				return new ResponseEntity<>(blog, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@DeleteMapping("/deleteBlog")
+	@Operation(summary = "Delete Blog")
+	public ResponseEntity<Void> deleteBlogById(Integer id) {
+		for (Blog blog : blogs) {
+			if (blog.getId().equals(id)) {
+				blogs.remove(blog);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }
